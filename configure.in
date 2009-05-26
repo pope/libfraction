@@ -7,4 +7,10 @@ AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
 
 AC_PROG_CC
 
+AC_CHECK_FUNCS(malloc)
+AC_CHECK_FUNCS(exit)
+AC_CHECK_FUNCS(printf)
+AC_CHECK_HEADERS(stdio.h)
+AC_CHECK_HEADERS(stdlib.h)
+
 AC_OUTPUT(Makefile src/Makefile)
