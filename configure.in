@@ -1,17 +1,32 @@
-AC_INIT(src/main.c)
+AC_PREREQ([2.63])
+AC_INIT(fraction, 0.1.0)
 
-PACKAGE=fraction
-VERSION=0.1.0
+AM_INIT_AUTOMAKE(fraction, 0.1.0)
 
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+AC_CONFIG_SRCDIR([src/fraction.c])
 
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_AWK
 AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
 LT_INIT
 
-AC_CHECK_FUNCS(malloc)
-AC_CHECK_FUNCS(exit)
-AC_CHECK_FUNCS(printf)
-AC_CHECK_HEADERS(stdio.h)
-AC_CHECK_HEADERS(stdlib.h)
+# Checks for libraries.
 
-AC_OUTPUT(Makefile src/Makefile)
+# Checks for header files.
+AC_CHECK_HEADERS([stdlib.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for library functions.
+AC_FUNC_MALLOC
+
+AC_CONFIG_FILES([Makefile
+                 src/Makefile])
+
+AC_OUTPUT
