@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009 K. Adam Christensen
  *
  * Permission is hereby granted, free of charge, to any person
@@ -24,7 +24,10 @@
  */
 
 /**
+ * @defgroup fraction Fraction
+ *
  * A simple module for dealing with Fractions
+ * @{
  */
 
 #ifndef _FRACTION_H
@@ -35,13 +38,14 @@
  */
 typedef struct Fraction Fraction;
 
+
 /**
  * @brief Fraction data structure
  */
 struct Fraction
 {
-    int numerator;
-    int denominator;
+    int numerator;      /**< the numerator, or top part of the fraction */
+    int denominator;    /**< the denominator, or bottom part */
 };
 
 /**
@@ -53,58 +57,66 @@ struct Fraction
  * @note You must free this when you are done.
  * @see fraction_destroy
  *
+ * @param n the numerator
+ * @param d the denominator
  * @return the pointer to the newly allocated Fraction
  */
 Fraction *
-fraction_create(
-    const int,      /** numerator */
-    const int       /** denominator */
-);
+fraction_create(const int n,
+                const int d);
 
 /**
  * @brief Add two fractions together
  *
  * Create a new Fraction whose result is the addition of two other Fractions.
  * The fraction is automatically reduced
+ *
+ * @note You are responsible for managing the memory of the new Fraction.
+ *
+ * @param a the first fraction
+ * @param b the second fraction
+ * @return the pointer to a newly allocated Fraction
  */
 Fraction *
-fraction_add(
-    const Fraction * const, /** the first fraction */
-    const Fraction * const  /** the second fraction */
-);
+fraction_add(const Fraction * const a,
+             const Fraction * const b);
 
 /**
  * @brief Frees up the memory used for this Fraction
+ *
+ * @param f a pointer to the Fraction to free
  */
 void
-fraction_destroy(
-    Fraction *
-);
+fraction_destroy(Fraction * f);
 
 /**
  * @brief Print out the Fraction
+ *
+ * @param f pointer to the Fraction to print
  */
 void
-fraction_print(
-    const Fraction * const
-);
+fraction_print(const Fraction * const f);
 
 /**
  * @brief Reduce the Fraction
+ *
+ * @param f pointer to the Fraction to reduce
  */
 void
-fraction_reduce(
-    Fraction * const
-);
+fraction_reduce(Fraction * const f);
 
 /**
  * @brief Set the numerator and denominator of the Fraction
+ *
+ * @param f the pointer to a Fraction to set
+ * @param n the numerator
+ * @param d the denominator
  */
 void
-fraction_set(
-    Fraction * const,   /** the Fraction to update */
-    const int,          /** new numerator */
-    const int           /** new denominator */
-);
+fraction_set(Fraction * const f,
+             const int n,
+             const int d);
+
+/** @} */
 
 #endif /* _FRACTION_H */
