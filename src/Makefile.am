@@ -1,5 +1,10 @@
-bin_PROGRAMS = main
-
 AM_CFLAGS = -Wall -g -ansi
 
-main_SOURCES = main.c fraction.h fraction.c
+lib_LTLIBRARIES = libfraction.la
+libfraction_la_SOURCES = fraction.h fraction.c
+
+bin_PROGRAMS = main
+main_SOURCES = main.c
+main_LDADD = libfraction.la
+
+include_HEADERS = fraction.h
