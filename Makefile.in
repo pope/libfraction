@@ -215,8 +215,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = src
 ACLOCAL_AMFLAGS = -I m4
+SUBDIRS = src test
 all: all-recursive
 
 .SUFFIXES:

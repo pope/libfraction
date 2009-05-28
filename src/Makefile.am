@@ -1,10 +1,7 @@
 AM_CFLAGS = -Wall -g -ansi
+ACLOCAL_AMFLAGS = -I m4
 
 lib_LTLIBRARIES = libfraction.la
 libfraction_la_SOURCES = fraction.h fraction.c
-
-bin_PROGRAMS = main
-main_SOURCES = main.c
-main_LDADD = libfraction.la
 
 include_HEADERS = fraction.h
