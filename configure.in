@@ -1,8 +1,9 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.63])
 AC_INIT(fraction, 0.1.0)
 
 AM_INIT_AUTOMAKE(fraction, 0.1.0)
-
 AC_CONFIG_SRCDIR([src/fraction.c])
 
 # Checks for programs.
@@ -13,10 +14,7 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
 LT_INIT
-
-# Checks for libraries.
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdlib.h])
@@ -26,7 +24,8 @@ AC_CHECK_HEADERS([stdlib.h])
 # Checks for library functions.
 AC_FUNC_MALLOC
 
-AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+AC_CONFIG_MACRO_DIR([m4])
+
+AC_CONFIG_FILES([Makefile src/Makefile])
 
 AC_OUTPUT
