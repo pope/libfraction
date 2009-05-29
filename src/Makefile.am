@@ -14,3 +14,6 @@ fraction_test_CFLAGS = ${AM_CFLAGS} -DUNIT_TESTING=1 -fprofile-arcs -ftest-cover
 fraction_test_LDADD = ${CMOCKERY_LIBS}
 
 TESTS = $(check_PROGRAMS)
+
+clean-local:
+	-rm -rf *.gcda *.gcno *gcov
