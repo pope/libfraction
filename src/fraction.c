@@ -31,6 +31,9 @@ Fraction *
 fraction_create(const int n,
                 const int d)
 {
+#if UNIT_TESTING
+    printf("Hello Bitches\n");
+#endif
     Fraction * f = (Fraction *) malloc(sizeof(Fraction));
     fraction_set(f, n, d);
     return f;

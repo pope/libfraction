@@ -5,6 +5,7 @@ AC_INIT(fraction, 0.1.0)
 
 AM_INIT_AUTOMAKE(fraction, 0.1.0)
 AC_CONFIG_SRCDIR([src/fraction.c])
+AC_CONFIG_HEADERS([src/config.h])
 
 # Checks for programs.
 AC_PROG_CXX
@@ -16,14 +17,33 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 LT_INIT
 
+# Ask user for path to cmockery
+AC_ARG_WITH([cmockery],
+    [--with-cmockery=<path> prefix of cmockery installation. e.g. /usr/local or /usr],
+    [
+        CMOCKERY_PREFIX="$withval"
+        AC_SUBST(CMOCKERY_PREFIX)
+        LDFLAGS="-L${CMOCKERY_PREFIX}/lib/ $LDFLAGS"
+        CMOCKERY_LIBS="-lcmockery"
+        CFLAGS="-I${CMOCKERY_PREFIX}/include $CFLAGS"
+    ],
+    [
+        AC_MSG_WARN([You must call configure with the --with-cmockery option to run tests.
+        This tells configure where to find the CMockery library and headers.
+        e.g. --with-cmockery=/usr/local or --with-cmockery=/usr])
+        CMOCKERY_LIBS=""
+    ]
+)
+AC_SUBST(CMOCKERY_LIBS)
+
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h])
+AC_CHECK_HEADERS([stdlib.h stddef.h google/cmockery.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-
+AC_CHECK_LIB([cmockery], [mock_assert])
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_FILES([Makefile src/Makefile test/Makefile])

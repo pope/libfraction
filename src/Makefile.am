@@ -1,4 +1,4 @@
-AM_CFLAGS = -Wall -g -ansi
+AM_CFLAGS = -Wall -g
 ACLOCAL_AMFLAGS = -I m4
 
 lib_LTLIBRARIES = libfraction.la
