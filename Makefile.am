@@ -1,3 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = src test
+SUBDIRS = src
+
+clean-local:
+	-rm -rf src/*.gcda src/*.gcno

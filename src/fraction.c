@@ -23,18 +23,27 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "fraction.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
+#include "fraction.h"
+
+#if UNIT_TESTING /*{{{*/
+#include <stdarg.h>
+#include <stddef.h>
+#include <setjmp.h>
+#include <google/cmockery.h>
+#endif /* UNIT_TESTING }}}*/
+
 
 Fraction *
 fraction_create(const int n,
                 const int d)
 {
-#if UNIT_TESTING
-    printf("Hello Bitches\n");
-#endif
     Fraction * f = (Fraction *) malloc(sizeof(Fraction));
+    assert(f != NULL);
+
     fraction_set(f, n, d);
     return f;
 }
@@ -44,6 +53,7 @@ fraction_set(Fraction * const f,
              const int n,
              const int d)
 {
+    assert(f != NULL);
     f->numerator = n;
     f->denominator = d;
 }
@@ -52,6 +62,9 @@ Fraction *
 fraction_add(const Fraction * const a,
              const Fraction * const b)
 {
+    assert(a != NULL);
+    assert(b != NULL);
+
     int numerator = a->numerator;
     int denominator = a->denominator;
 
@@ -67,12 +80,15 @@ fraction_add(const Fraction * const a,
 void
 fraction_destroy(Fraction * f)
 {
+    assert(f != NULL);
     free(f);
 }
 
 void
 fraction_reduce(Fraction * const f)
 {
+    assert(f != NULL);
+
     int u = f->numerator;
     int v = f->denominator;
     int tmp;
@@ -90,5 +106,6 @@ fraction_reduce(Fraction * const f)
 void
 fraction_print(const Fraction * const f)
 {
+    assert(f != NULL);
     printf("%d/%d\n", f->numerator, f->denominator);
 }

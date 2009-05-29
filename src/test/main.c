@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "fraction.h"
+#include "../fraction.h"
 #include <stdio.h>
 
 int main(void)

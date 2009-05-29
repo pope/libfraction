@@ -35,6 +35,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+check_PROGRAMS = main$(EXEEXT) fraction_test$(EXEEXT)
 subdir = src
 DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in
@@ -72,6 +73,22 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libfraction_la_LIBADD =
 am_libfraction_la_OBJECTS = fraction.lo
 libfraction_la_OBJECTS = $(am_libfraction_la_OBJECTS)
+am__objects_1 = fraction_test-fraction.$(OBJEXT)
+am_fraction_test_OBJECTS = fraction_test-fraction_test.$(OBJEXT) \
+	$(am__objects_1)
+fraction_test_OBJECTS = $(am_fraction_test_OBJECTS)
+am__DEPENDENCIES_1 =
+fraction_test_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fraction_test_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(fraction_test_CFLAGS) \
+	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+am__objects_2 = main-fraction.$(OBJEXT)
+am_main_OBJECTS = main-main.$(OBJEXT) $(am__objects_2)
+main_OBJECTS = $(am_main_OBJECTS)
+main_LDADD = $(LDADD)
+main_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(main_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -85,11 +102,15 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libfraction_la_SOURCES)
-DIST_SOURCES = $(libfraction_la_SOURCES)
+SOURCES = $(libfraction_la_SOURCES) $(fraction_test_SOURCES) \
+	$(main_SOURCES)
+DIST_SOURCES = $(libfraction_la_SOURCES) $(fraction_test_SOURCES) \
+	$(main_SOURCES)
 HEADERS = $(include_HEADERS)
 ETAGS = etags
 CTAGS = ctags
+am__tty_colors = \
+red=; grn=; lgn=; blu=; std=
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -209,10 +230,15 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CFLAGS = -Wall -g
-ACLOCAL_AMFLAGS = -I m4
 lib_LTLIBRARIES = libfraction.la
 libfraction_la_SOURCES = fraction.h fraction.c
 include_HEADERS = fraction.h
+main_SOURCES = test/main.c $(libfraction_la_SOURCES)
+main_CFLAGS = ${AM_CFLAGS}
+fraction_test_SOURCES = test/fraction_test.c $(libfraction_la_SOURCES)
+fraction_test_CFLAGS = ${AM_CFLAGS} -DUNIT_TESTING=1 -fprofile-arcs -ftest-coverage
+fraction_test_LDADD = ${CMOCKERY_LIBS}
+TESTS = $(check_PROGRAMS)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -299,6 +325,21 @@ clean-libLTLIBRARIES:
 libfraction.la: $(libfraction_la_OBJECTS) $(libfraction_la_DEPENDENCIES) 
 	$(LINK) -rpath $(libdir) $(libfraction_la_OBJECTS) $(libfraction_la_LIBADD) $(LIBS)
 
+clean-checkPROGRAMS:
+	@list='$(check_PROGRAMS)'; test -n "$$list" || exit 0; \
+	echo " rm -f" $$list; \
+	rm -f $$list || exit $$?; \
+	test -n "$(EXEEXT)" || exit 0; \
+	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
+	echo " rm -f" $$list; \
+	rm -f $$list
+fraction_test$(EXEEXT): $(fraction_test_OBJECTS) $(fraction_test_DEPENDENCIES) 
+	@rm -f fraction_test$(EXEEXT)
+	$(fraction_test_LINK) $(fraction_test_OBJECTS) $(fraction_test_LDADD) $(LIBS)
+main$(EXEEXT): $(main_OBJECTS) $(main_DEPENDENCIES) 
+	@rm -f main$(EXEEXT)
+	$(main_LINK) $(main_OBJECTS) $(main_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -306,6 +347,10 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fraction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fraction_test-fraction.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fraction_test-fraction_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main-fraction.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main-main.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -327,6 +372,62 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+fraction_test-fraction_test.o: test/fraction_test.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fraction_test_CFLAGS) $(CFLAGS) -MT fraction_test-fraction_test.o -MD -MP -MF $(DEPDIR)/fraction_test-fraction_test.Tpo -c -o fraction_test-fraction_test.o `test -f 'test/fraction_test.c' || echo '$(srcdir)/'`test/fraction_test.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/fraction_test-fraction_test.Tpo $(DEPDIR)/fraction_test-fraction_test.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test/fraction_test.c' object='fraction_test-fraction_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fraction_test_CFLAGS) $(CFLAGS) -c -o fraction_test-fraction_test.o `test -f 'test/fraction_test.c' || echo '$(srcdir)/'`test/fraction_test.c
+
+fraction_test-fraction_test.obj: test/fraction_test.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fraction_test_CFLAGS) $(CFLAGS) -MT fraction_test-fraction_test.obj -MD -MP -MF $(DEPDIR)/fraction_test-fraction_test.Tpo -c -o fraction_test-fraction_test.obj `if test -f 'test/fraction_test.c'; then $(CYGPATH_W) 'test/fraction_test.c'; else $(CYGPATH_W) '$(srcdir)/test/fraction_test.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/fraction_test-fraction_test.Tpo $(DEPDIR)/fraction_test-fraction_test.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test/fraction_test.c' object='fraction_test-fraction_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fraction_test_CFLAGS) $(CFLAGS) -c -o fraction_test-fraction_test.obj `if test -f 'test/fraction_test.c'; then $(CYGPATH_W) 'test/fraction_test.c'; else $(CYGPATH_W) '$(srcdir)/test/fraction_test.c'; fi`
+
+fraction_test-fraction.o: fraction.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fraction_test_CFLAGS) $(CFLAGS) -MT fraction_test-fraction.o -MD -MP -MF $(DEPDIR)/fraction_test-fraction.Tpo -c -o fraction_test-fraction.o `test -f 'fraction.c' || echo '$(srcdir)/'`fraction.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/fraction_test-fraction.Tpo $(DEPDIR)/fraction_test-fraction.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='fraction.c' object='fraction_test-fraction.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fraction_test_CFLAGS) $(CFLAGS) -c -o fraction_test-fraction.o `test -f 'fraction.c' || echo '$(srcdir)/'`fraction.c
+
+fraction_test-fraction.obj: fraction.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fraction_test_CFLAGS) $(CFLAGS) -MT fraction_test-fraction.obj -MD -MP -MF $(DEPDIR)/fraction_test-fraction.Tpo -c -o fraction_test-fraction.obj `if test -f 'fraction.c'; then $(CYGPATH_W) 'fraction.c'; else $(CYGPATH_W) '$(srcdir)/fraction.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/fraction_test-fraction.Tpo $(DEPDIR)/fraction_test-fraction.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='fraction.c' object='fraction_test-fraction.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fraction_test_CFLAGS) $(CFLAGS) -c -o fraction_test-fraction.obj `if test -f 'fraction.c'; then $(CYGPATH_W) 'fraction.c'; else $(CYGPATH_W) '$(srcdir)/fraction.c'; fi`
+
+main-main.o: test/main.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(main_CFLAGS) $(CFLAGS) -MT main-main.o -MD -MP -MF $(DEPDIR)/main-main.Tpo -c -o main-main.o `test -f 'test/main.c' || echo '$(srcdir)/'`test/main.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/main-main.Tpo $(DEPDIR)/main-main.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test/main.c' object='main-main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(main_CFLAGS) $(CFLAGS) -c -o main-main.o `test -f 'test/main.c' || echo '$(srcdir)/'`test/main.c
+
+main-main.obj: test/main.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(main_CFLAGS) $(CFLAGS) -MT main-main.obj -MD -MP -MF $(DEPDIR)/main-main.Tpo -c -o main-main.obj `if test -f 'test/main.c'; then $(CYGPATH_W) 'test/main.c'; else $(CYGPATH_W) '$(srcdir)/test/main.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/main-main.Tpo $(DEPDIR)/main-main.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test/main.c' object='main-main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(main_CFLAGS) $(CFLAGS) -c -o main-main.obj `if test -f 'test/main.c'; then $(CYGPATH_W) 'test/main.c'; else $(CYGPATH_W) '$(srcdir)/test/main.c'; fi`
+
+main-fraction.o: fraction.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(main_CFLAGS) $(CFLAGS) -MT main-fraction.o -MD -MP -MF $(DEPDIR)/main-fraction.Tpo -c -o main-fraction.o `test -f 'fraction.c' || echo '$(srcdir)/'`fraction.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/main-fraction.Tpo $(DEPDIR)/main-fraction.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='fraction.c' object='main-fraction.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(main_CFLAGS) $(CFLAGS) -c -o main-fraction.o `test -f 'fraction.c' || echo '$(srcdir)/'`fraction.c
+
+main-fraction.obj: fraction.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(main_CFLAGS) $(CFLAGS) -MT main-fraction.obj -MD -MP -MF $(DEPDIR)/main-fraction.Tpo -c -o main-fraction.obj `if test -f 'fraction.c'; then $(CYGPATH_W) 'fraction.c'; else $(CYGPATH_W) '$(srcdir)/fraction.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/main-fraction.Tpo $(DEPDIR)/main-fraction.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='fraction.c' object='main-fraction.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(main_CFLAGS) $(CFLAGS) -c -o main-fraction.obj `if test -f 'fraction.c'; then $(CYGPATH_W) 'fraction.c'; else $(CYGPATH_W) '$(srcdir)/fraction.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -406,6 +507,98 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
+check-TESTS: $(TESTS)
+	@failed=0; all=0; xfail=0; xpass=0; skip=0; \
+	srcdir=$(srcdir); export srcdir; \
+	list=' $(TESTS) '; \
+	$(am__tty_colors); \
+	if test -n "$$list"; then \
+	  for tst in $$list; do \
+	    if test -f ./$$tst; then dir=./; \
+	    elif test -f $$tst; then dir=; \
+	    else dir="$(srcdir)/"; fi; \
+	    if $(TESTS_ENVIRONMENT) $${dir}$$tst; then \
+	      all=`expr $$all + 1`; \
+	      case " $(XFAIL_TESTS) " in \
+	      *[\ \	]$$tst[\ \	]*) \
+		xpass=`expr $$xpass + 1`; \
+		failed=`expr $$failed + 1`; \
+		col=$$red; res=XPASS; \
+	      ;; \
+	      *) \
+		col=$$grn; res=PASS; \
+	      ;; \
+	      esac; \
+	    elif test $$? -ne 77; then \
+	      all=`expr $$all + 1`; \
+	      case " $(XFAIL_TESTS) " in \
+	      *[\ \	]$$tst[\ \	]*) \
+		xfail=`expr $$xfail + 1`; \
+		col=$$lgn; res=XFAIL; \
+	      ;; \
+	      *) \
+		failed=`expr $$failed + 1`; \
+		col=$$red; res=FAIL; \
+	      ;; \
+	      esac; \
+	    else \
+	      skip=`expr $$skip + 1`; \
+	      col=$$blu; res=SKIP; \
+	    fi; \
+	    echo "$${col}$$res$${std}: $$tst"; \
+	  done; \
+	  if test "$$all" -eq 1; then \
+	    tests="test"; \
+	    All=""; \
+	  else \
+	    tests="tests"; \
+	    All="All "; \
+	  fi; \
+	  if test "$$failed" -eq 0; then \
+	    if test "$$xfail" -eq 0; then \
+	      banner="$$All$$all $$tests passed"; \
+	    else \
+	      if test "$$xfail" -eq 1; then failures=failure; else failures=failures; fi; \
+	      banner="$$All$$all $$tests behaved as expected ($$xfail expected $$failures)"; \
+	    fi; \
+	  else \
+	    if test "$$xpass" -eq 0; then \
+	      banner="$$failed of $$all $$tests failed"; \
+	    else \
+	      if test "$$xpass" -eq 1; then passes=pass; else passes=passes; fi; \
+	      banner="$$failed of $$all $$tests did not behave as expected ($$xpass unexpected $$passes)"; \
+	    fi; \
+	  fi; \
+	  dashes="$$banner"; \
+	  skipped=""; \
+	  if test "$$skip" -ne 0; then \
+	    if test "$$skip" -eq 1; then \
+	      skipped="($$skip test was not run)"; \
+	    else \
+	      skipped="($$skip tests were not run)"; \
+	    fi; \
+	    test `echo "$$skipped" | wc -c` -le `echo "$$banner" | wc -c` || \
+	      dashes="$$skipped"; \
+	  fi; \
+	  report=""; \
+	  if test "$$failed" -ne 0 && test -n "$(PACKAGE_BUGREPORT)"; then \
+	    report="Please report to $(PACKAGE_BUGREPORT)"; \
+	    test `echo "$$report" | wc -c` -le `echo "$$banner" | wc -c` || \
+	      dashes="$$report"; \
+	  fi; \
+	  dashes=`echo "$$dashes" | sed s/./=/g`; \
+	  if test "$$failed" -eq 0; then \
+	    echo "$$grn$$dashes"; \
+	  else \
+	    echo "$$red$$dashes"; \
+	  fi; \
+	  echo "$$banner"; \
+	  test -z "$$skipped" || echo "$$skipped"; \
+	  test -z "$$report" || echo "$$report"; \
+	  echo "$$dashes$$std"; \
+	  test "$$failed" -eq 0; \
+	else :; fi
+
 distdir: $(DISTFILES)
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
@@ -437,6 +630,8 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
+	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS) config.h
 installdirs:
@@ -470,8 +665,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	mostlyclean-am
+clean-am: clean-checkPROGRAMS clean-generic clean-libLTLIBRARIES \
+	clean-libtool mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -539,19 +734,19 @@ ps-am:
 
 uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES
 
-.MAKE: all install-am install-strip
+.MAKE: all check-am install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool ctags distclean \
-	distclean-compile distclean-generic distclean-hdr \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am \
-	install-includeHEADERS install-info install-info-am \
-	install-libLTLIBRARIES install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+.PHONY: CTAGS GTAGS all all-am check check-TESTS check-am clean \
+	clean-checkPROGRAMS clean-generic clean-libLTLIBRARIES \
+	clean-libtool ctags distclean distclean-compile \
+	distclean-generic distclean-hdr distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-includeHEADERS install-info \
+	install-info-am install-libLTLIBRARIES install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-includeHEADERS \
