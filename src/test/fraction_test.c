@@ -33,10 +33,23 @@
 void
 should_create_and_destroy_a_new_fraction(void **state)
 {
-    Fraction * f = fraction_create(2, 6);
-    assert_int_equal(2, f->numerator);
-    assert_int_equal(6, f->denominator);
+    Fraction * f = fraction_create(1, 3);
+    assert_int_equal(1, f->numerator);
+    assert_int_equal(3, f->denominator);
     fraction_destroy(f);
+}
+
+void
+should_add_together_two_fractions(void **state)
+{
+    Fraction * fa = fraction_create(1, 6);
+    Fraction * fb = fraction_create(1, 3);
+    Fraction * sum = fraction_add(fa, fb);
+    assert_int_equal(1, sum->numerator);
+    assert_int_equal(2, sum->denominator);
+    fraction_destroy(fa);
+    fraction_destroy(fb);
+    fraction_destroy(sum);
 }
 
 int
@@ -44,6 +57,7 @@ main(int argc, char *argv[])
 {
     const UnitTest tests[] = {
         unit_test(should_create_and_destroy_a_new_fraction),
+        unit_test(should_add_together_two_fractions),
     };
     return run_tests(tests);
 }
