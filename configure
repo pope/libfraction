@@ -789,7 +789,6 @@ am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
 CMOCKERY_LIBS
-CMOCKERY_PREFIX
 CXXCPP
 OTOOL64
 OTOOL
@@ -911,7 +910,6 @@ with_pic
 enable_fast_install
 with_gnu_ld
 enable_libtool_lock
-with_cmockery
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1570,7 +1568,6 @@ Optional Packages:
   --with-pic              try to use only PIC/non-PIC objects [default=use
                           both]
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
---with-cmockery=<path> prefix of cmockery installation. e.g. /usr/local or /usr
 
 Some influential environment variables:
   CXX         C++ compiler command
@@ -5295,13 +5292,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:5298: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:5295: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5301: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:5298: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5304: output\"" >&5)
+  (eval echo "\"\$as_me:5301: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -6496,7 +6493,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6499 "configure"' > conftest.$ac_ext
+  echo '#line 6496 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8851,11 +8848,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8854: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8851: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8858: \$? = $ac_status" >&5
+   echo "$as_me:8855: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9190,11 +9187,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9193: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9190: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9197: \$? = $ac_status" >&5
+   echo "$as_me:9194: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9295,11 +9292,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9298: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9295: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9302: \$? = $ac_status" >&5
+   echo "$as_me:9299: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9350,11 +9347,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9353: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9350: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9357: \$? = $ac_status" >&5
+   echo "$as_me:9354: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12150,7 +12147,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12153 "configure"
+#line 12150 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12246,7 +12243,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12249 "configure"
+#line 12246 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14266,11 +14263,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14269: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14266: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14273: \$? = $ac_status" >&5
+   echo "$as_me:14270: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -14365,11 +14362,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14368: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14365: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14372: \$? = $ac_status" >&5
+   echo "$as_me:14369: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14417,11 +14414,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14420: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14417: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14424: \$? = $ac_status" >&5
+   echo "$as_me:14421: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15535,30 +15532,7 @@ fi
 
 
 
-# Ask user for path to cmockery
-
-# Check whether --with-cmockery was given.
-if test "${with_cmockery+set}" = set; then
-  withval=$with_cmockery;
-        CMOCKERY_PREFIX="$withval"
-
-        LDFLAGS="-L${CMOCKERY_PREFIX}/lib/ $LDFLAGS"
-        CMOCKERY_LIBS="-lcmockery"
-        CFLAGS="-I${CMOCKERY_PREFIX}/include $CFLAGS"
-
-else
-
-        { $as_echo "$as_me:$LINENO: WARNING: You must call configure with the --with-cmockery option to run tests.
-        This tells configure where to find the CMockery library and headers.
-        e.g. --with-cmockery=/usr/local or --with-cmockery=/usr" >&5
-$as_echo "$as_me: WARNING: You must call configure with the --with-cmockery option to run tests.
-        This tells configure where to find the CMockery library and headers.
-        e.g. --with-cmockery=/usr/local or --with-cmockery=/usr" >&2;}
-        CMOCKERY_LIBS=""
-
-
-fi
-
+CMOCKERY_LIBS="-lcmockery"
 
 
 # Checks for header files.

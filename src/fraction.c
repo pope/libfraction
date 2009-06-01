@@ -26,7 +26,6 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <malloc.h>
 #include "fraction.h"
 
 #if UNIT_TESTING /*{{{*/

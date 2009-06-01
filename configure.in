@@ -19,23 +19,7 @@ LT_INIT
 
 AM_PROG_CC_C_O
 
-# Ask user for path to cmockery
-AC_ARG_WITH([cmockery],
-    [--with-cmockery=<path> prefix of cmockery installation. e.g. /usr/local or /usr],
-    [
-        CMOCKERY_PREFIX="$withval"
-        AC_SUBST(CMOCKERY_PREFIX)
-        LDFLAGS="-L${CMOCKERY_PREFIX}/lib/ $LDFLAGS"
-        CMOCKERY_LIBS="-lcmockery"
-        CFLAGS="-I${CMOCKERY_PREFIX}/include $CFLAGS"
-    ],
-    [
-        AC_MSG_WARN([You must call configure with the --with-cmockery option to run tests.
-        This tells configure where to find the CMockery library and headers.
-        e.g. --with-cmockery=/usr/local or --with-cmockery=/usr])
-        CMOCKERY_LIBS=""
-    ]
-)
+CMOCKERY_LIBS="-lcmockery"
 AC_SUBST(CMOCKERY_LIBS)
 
 # Checks for header files.
