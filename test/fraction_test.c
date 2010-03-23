@@ -28,7 +28,12 @@
 #include <stddef.h>
 #include <setjmp.h>
 #include <google/cmockery.h>
-#include "../fraction.h"
+
+#include "fraction.h"
+
+void should_create_and_destroy_a_new_fraction(void **);
+void should_add_together_two_fractions(void **);
+int main(void);
 
 void
 should_create_and_destroy_a_new_fraction(void **state)
@@ -53,7 +58,7 @@ should_add_together_two_fractions(void **state)
 }
 
 int
-main(int argc, char *argv[])
+main(void)
 {
     const UnitTest tests[] = {
         unit_test(should_create_and_destroy_a_new_fraction),
